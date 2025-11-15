@@ -439,6 +439,28 @@ header {
   animation: slideInDown 0.5s ease-out;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 @keyframes slideInDown {
   from {
     opacity: 0;
@@ -951,6 +973,41 @@ header h2 {
   z-index: 2;
 }
 
+.mobile-sidebar-close {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  z-index: 100;
+  transition: all 0.2s ease;
+}
+
+.mobile-sidebar-close:hover {
+  background: #c82333;
+  transform: scale(1.1);
+}
+
+.mobile-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s ease-out;
+}
+
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
@@ -1214,23 +1271,50 @@ a:hover::after {
   
   header {
     padding: 14px 18px;
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
-    text-align: center;
+    text-align: left;
   }
   
   header h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  
+  .header-left {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .header-left h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   
   .profile-info {
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
     align-items: center;
+    flex-shrink: 0;
   }
   
   .profile-details {
-    text-align: center;
+    text-align: right;
+    display: none;
+  }
+  
+  .profile-details .user-name {
+    font-size: 0.9rem;
+  }
+  
+  .profile-details .user-role {
+    font-size: 0.75rem;
+  }
+  
+  .btn-logout {
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
   
   .welcome-container h1 {
@@ -1283,10 +1367,37 @@ a:hover::after {
   .chat-body {
     grid-template-columns: 1fr;
     height: calc(100vh - 60px);
+    position: relative;
   }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
   .sidebar { 
-    display: none; 
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    z-index: 999;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2);
+    padding-top: 60px;
   }
+  
+  .sidebar.mobile-sidebar-open {
+    left: 0;
+  }
+  
+  .mobile-sidebar-close {
+    display: block;
+  }
+  
+  .mobile-sidebar-overlay {
+    display: block;
+  }
+  
   .participants { 
     display: none; 
   }
