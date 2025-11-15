@@ -1258,15 +1258,30 @@ a:hover::after {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Center login/signup containers on mobile */
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  
   .container {
-    margin: 20px;
+    margin: 20px auto;
     padding: 2rem;
     border-radius: 20px;
+    width: calc(100% - 40px);
+    max-width: 450px;
   }
   
   .chat-container {
     width: 100vw;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
   }
   
   header {
@@ -1424,9 +1439,11 @@ a:hover::after {
   }
   
   .container {
-    margin: 15px;
+    margin: 15px auto;
     padding: 1.5rem;
     border-radius: 18px;
+    width: calc(100% - 30px);
+    max-width: 450px;
   }
   
   .container h2 {
