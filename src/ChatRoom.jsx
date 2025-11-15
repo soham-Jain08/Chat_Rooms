@@ -20,6 +20,7 @@ export default function ChatRoom() {
   const [newRoomName, setNewRoomName] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [showParticipants, setShowParticipants] = useState(true);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const endOfMessagesRef = useRef(null);
 
   // Whether the current user has any rooms
@@ -146,6 +147,7 @@ export default function ChatRoom() {
     });
     setSelectedRoom({ id: roomRef.id, name: newRoomName.trim() || "New Room", code });
     setNewRoomName("");
+    setShowMobileSidebar(false);
   };
 
   const handleJoinRoom = async () => {
@@ -164,6 +166,7 @@ export default function ChatRoom() {
     });
     setSelectedRoom({ id: roomDoc.id, ...roomDoc.data() });
     setJoinCode("");
+    setShowMobileSidebar(false);
   };
 
   const canManageRoom = (room) => {
@@ -372,7 +375,16 @@ export default function ChatRoom() {
   return (
     <div className="chat-container">
       <header>
-        <h2>{selectedRoom ? selectedRoom.name : "Chat Rooms"}</h2>
+        <div className="header-left">
+          <button 
+            className="mobile-menu-btn" 
+            onClick={() => setShowMobileSidebar(!showMobileSidebar)}
+            aria-label="Toggle menu"
+          >
+            ☰
+          </button>
+          <h2>{selectedRoom ? selectedRoom.name : "Chat Rooms"}</h2>
+        </div>
         <div className="profile-info">
           <div className="profile-details">
             <p className="user-name">{currentUser.name}</p>
@@ -384,7 +396,15 @@ export default function ChatRoom() {
       </header>
 
       <div className="chat-body">
-        <aside className="sidebar">
+        {showMobileSidebar && <div className="mobile-sidebar-overlay" onClick={() => setShowMobileSidebar(false)}></div>}
+        <aside className={`sidebar ${showMobileSidebar ? 'mobile-sidebar-open' : ''}`}>
+          <button 
+            className="mobile-sidebar-close" 
+            onClick={() => setShowMobileSidebar(false)}
+            aria-label="Close menu"
+          >
+            ×
+          </button>
           {!isCloudinaryConfigured() && (
             <div className="sidebar-section">
               <p className="muted">Cloudinary not configured. Add VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET in .env</p>
@@ -409,7 +429,10 @@ export default function ChatRoom() {
                 <div
                   key={room.id}
                   className={`room-item ${selectedRoom?.id === room.id ? "active" : ""}`}
-                  onClick={() => setSelectedRoom(room)}
+                  onClick={() => {
+                    setSelectedRoom(room);
+                    setShowMobileSidebar(false);
+                  }}
                 >
                   <div className="room-name">{room.name}</div>
                   {room.code && <div className="room-code">Code: {room.code}</div>}
